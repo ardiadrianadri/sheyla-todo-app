@@ -1,0 +1,101 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/task-list/task-list.html">
+<link rel="import" href="../../bower_components/task-repository/task-repository.html">
+<link rel="import" href="../../bower_components/console-messages/console-messages.html">
+<dom-module id="todo-app">
+  <template>
+    <style>
+      :host {
+        display: block;
+        
+        
+      }
+      form-task{
+        --input__control: {
+          background-color: #eee;
+        }
+        --form__button: {
+          background-color: #3f51b5;
+          color: #fff;
+          font-weight: bold;
+        }
+      }
+    </style>
+    <form-task search-button="Buscar" label-text="Task description"></form-task>
+
+    <task-repository offset="0" limit="5" id="repository"></task-repository>
+    <task-list id="taskList"></task-list>
+
+    <console-messages title="Consola">
+      <p>Esto es un mensaje de prueba de la consola</p>
+    </console-messages>
+  </template>
+ 
+  <script>
+    
+    /**
+     * @customElement
+     * @polymer
+     */
+    class TodoAppApp extends Polymer.Element {
+      static get is() { return 'todo-app'; }
+      static get properties() {
+        return {
+          listTask: Array
+        };
+      }
+      connectCallback(){
+        super.connectCallback();
+        let elementRepository = this.shadowRoot.querySelector('#repository');
+        let elementList = this.shadowRoot.querySelector('#taskList');
+        elementRepository.addEventListener('page-event', (e)=>{
+          
+          elementList.taskList = e.detail.taskList;
+          /*let htmlTaskElement = this.shadowRoot.querySelector('#task-list');
+          htmlTaskElement.taskList = e.detail.taskList;*/
+        });
+        let taskList = [
+          {
+            id:0,
+            title: 'Learn Polymer 2',
+            done: false,
+            canceled: false
+          },
+          {
+            id:1,
+            title: 'Speak English',
+            done: true,
+            canceled: false
+          },
+          {
+            id:2,
+            title: 'Become preside of Spain',
+            done: false,
+            canceled: true
+          },
+          {
+            id:3,
+            title: 'Submarine drive license',
+            done: false,
+            canceled: false
+          },
+          {
+            id:4,
+            title: 'Win the lotery',
+            done: false,
+            canceled: true
+          }
+        ];
+        elementList.taskList = taskList;
+        element.offset=2;
+      }
+     
+    }
+
+      
+
+    window.customElements.define(TodoAppApp.is, TodoAppApp);
+    
+    
+  </script>
+</dom-module>
